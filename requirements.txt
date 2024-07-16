@@ -3,5 +3,3 @@ fastapi[all]
 uvicorn
 pydantic 
 pillow 
-torch 
-torchvision
