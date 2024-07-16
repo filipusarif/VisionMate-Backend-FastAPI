@@ -11,7 +11,7 @@ app = FastAPI()
 
 # Tambahkan middleware CORS
 origins = [
-    "http://localhost:5173",  # Tambahkan URL frontend React kamu di sini
+    "https://blindsens.vercel.app/",  # Tambahkan URL frontend React kamu di sini
 ]
 
 app.add_middleware(
@@ -32,3 +32,7 @@ async def detect(file: UploadFile = File(...)):
     results = model(image)
     detections = results.pandas().xyxy[0].to_dict(orient="records")
     return JSONResponse(content=detections)
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
