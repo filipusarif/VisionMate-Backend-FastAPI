@@ -25,6 +25,9 @@ app.add_middleware(
 # Load YOLO model
 model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
 
+# Simpan model ke format ONNX
+model.export(onnx_path='yolov5s.onnx')
+
 @app.post("/detect/")
 async def detect(file: UploadFile = File(...)):
     image = Image.open(io.BytesIO(await file.read()))

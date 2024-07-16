@@ -1,6 +1,5 @@
 fastapi
-fastapi[all]
 uvicorn
-pydantic 
-pillow 
-opencv-python-headless
+pillow
+imageio
+onnxruntime
