@@ -1,8 +1,5 @@
 fastapi
-fastapi[all]
 uvicorn
-pydantic 
-pillow 
-torch 
-torchvision
+pillow
+torch
 opencv-python-headless
