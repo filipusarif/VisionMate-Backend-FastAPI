@@ -2,7 +2,6 @@ from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 import io
-import cv2
 import numpy as np
 
 
