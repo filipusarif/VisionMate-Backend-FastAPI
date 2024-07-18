@@ -38,27 +38,38 @@ def detections_to_story(detections):
         "Terdapat",
     ]
     object_templates = [
-        "sebuah {label} pada jarak {distance} cm",
-        "{label} dengan jarak {distance} cm",
-        "seorang {label} yang berada {distance} cm dari Anda",
+        "{count} {label} pada jarak {distance} cm",
+        "{count} {label} dengan jarak {distance} cm",
+        "{count} {label} yang berada {distance} cm dari Anda",
     ]
     conjunctions = [
         "dan",
         "serta",
         "juga",
     ]
-    
+
     if not detections:
         return "Tidak ada objek yang terdeteksi."
 
-    stories = [random.choice(introduction_templates)]
-    for i, detection in enumerate(detections):
+    # Group detections by label and find the closest distance
+    detection_summary = {}
+    for detection in detections:
         label = detection['name']
         distance = calculate_distance(detection)
-        stories.append(random.choice(object_templates).format(label=label, distance=distance))
-        if i < len(detections) - 1:
+        if label in detection_summary:
+            detection_summary[label]['count'] += 1
+            detection_summary[label]['closest_distance'] = min(detection_summary[label]['closest_distance'], distance)
+        else:
+            detection_summary[label] = {'count': 1, 'closest_distance': distance}
+
+    stories = [random.choice(introduction_templates)]
+    for i, (label, summary) in enumerate(detection_summary.items()):
+        count = summary['count']
+        closest_distance = summary['closest_distance']
+        stories.append(random.choice(object_templates).format(count=count, label=label, distance=closest_distance))
+        if i < len(detection_summary) - 1:
             stories.append(random.choice(conjunctions))
-    
+
     return " ".join(stories) + "."
 
 @app.post("/detect/")
